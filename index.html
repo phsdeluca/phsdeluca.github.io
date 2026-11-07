@@ -89,7 +89,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--line)}
   <div class="divider reveal">✦</div>
 
   <section class="reveal" id="pagesSec"><h2 id="pagesTitle"></h2><div class="list" id="pages"></div></section>
-  <section class="reveal" id="plSec"><h2 id="plTitle"></h2><div class="list" id="playlists"></div></section>
+  <div id="groups"></div>
 </main>
 
 <script>
@@ -126,17 +126,22 @@ const CONFIG = {
     { label: "LetterboxD",       note: "Resenhas pessoais de filmes",        url: "https://letterboxd.com/", thumb: "" }
   ],
 
-  playlistsTitle: "Playlists",
-  playlists: [
-    { name: "DLC Legends of Rock", desc: "Rock até anos 90 • 2025",     ytmusic: "https://music.youtube.com/playlist?list=PLOGD6wabdoVE&si=Y_JhRePLSvdMqS-i&drli=1", spotify: "https://open.spotify.com/", visible: true },
-    { name: "DLC Warriors of Rock", desc: "Rock pós anos 90 • 2025", ytmusic: "https://music.youtube.com/playlist?list=PLQ0LV_xqkzaI&si=-1wNPAYI9LqdFBXQ&drli=1", spotify: "https://open.spotify.com/", visible: true },
-    { name: "DLC OST Games", desc: "Games • 2025",   ytmusic: "https://music.youtube.com/playlist?list=PLLIzZl6qU2QlaVdcfk8octdERNuJ4hqlh&si=V0reVjAjKCq-lY7V&drli=1", spotify: "https://open.spotify.com/", visible: true }
-  ],
-
-  playlistsTitle: "Playlists Infinitas",
-  playlists2: [
-    { name: "DLC Funk", desc: "FUNK • 2025",     ytmusic: "https://music.youtube.com/playlist?list=PLLIzZl6qU2Qlb9kGq7d9IsDnnp0UXVfgZ&si=nECR6h4c_TZseImU&drli=1", visible: true },
-    { name: "DLC Phonk", desc: "PHONK • 2025", ytmusic: "https://music.youtube.com/playlist?list=PLLIzZl6qU2Qnz7UESYzD-PCktvKzzlZzp&si=H59rLwcAOqUqg7Kr&drli=1", visible: true }
+  playlistGroups: [
+    {
+      title: "Playlists",
+      items: [
+        { name: "DLC Legends of Rock", desc: "Rock até anos 90 • 2025",  ytmusic: "https://music.youtube.com/playlist?list=PLOGD6wabdoVE&si=Y_JhRePLSvdMqS-i&drli=1", spotify: "https://open.spotify.com/", visible: true },
+        { name: "DLC Warriors of Rock", desc: "Rock pós anos 90 • 2025", ytmusic: "https://music.youtube.com/playlist?list=PLQ0LV_xqkzaI&si=-1wNPAYI9LqdFBXQ&drli=1", spotify: "https://open.spotify.com/", visible: true },
+        { name: "DLC OST Games", desc: "Games • 2025", ytmusic: "https://music.youtube.com/playlist?list=PLLIzZl6qU2QlaVdcfk8octdERNuJ4hqlh&si=V0reVjAjKCq-lY7V&drli=1", spotify: "https://open.spotify.com/", visible: true }
+      ]
+    },
+    {
+      title: "Playlists Infinitas",
+      items: [
+        { name: "DLC Funk", desc: "FUNK • 2025", ytmusic: "https://music.youtube.com/playlist?list=PLLIzZl6qU2Qlb9kGq7d9IsDnnp0UXVfgZ&si=nECR6h4c_TZseImU&drli=1", visible: true },
+        { name: "DLC Phonk", desc: "PHONK • 2025", ytmusic: "https://music.youtube.com/playlist?list=PLLIzZl6qU2Qnz7UESYzD-PCktvKzzlZzp&si=H59rLwcAOqUqg7Kr&drli=1", visible: true }
+      ]
+    }
   ]
 };
 /* ==================================================================== */
@@ -205,33 +210,44 @@ CONFIG.pages.forEach(p => {
 });
 if (!CONFIG.pages.length) $("pagesSec").hidden = true;
 
-// Playlists
-$("plTitle").textContent = CONFIG.playlistsTitle;
-const shown = CONFIG.playlists.filter(p => p.visible !== false);
-if (!shown.length) $("plSec").hidden = true;
-shown.forEach((p, i) => {
-  const item = el("div", { className: "reveal" });
-  const btn = el("button", { className: "row", type: "button" });
-  btn.appendChild(el("b", {}, p.name));
-  if (p.desc) btn.appendChild(el("small", {}, p.desc));
-  btn.setAttribute("aria-expanded", "false");
-  btn.setAttribute("aria-controls", "panel" + i);
+// Playlists (uma seção para cada grupo)
+let panelId = 0;
+CONFIG.playlistGroups.forEach(group => {
+  const shown = group.items.filter(p => p.visible !== false);
+  if (!shown.length) return;
 
-  const panel = el("div", { className: "panel", id: "panel" + i });
-  panel.inert = true;
-  const inner = el("div");
-  if (p.ytmusic) inner.appendChild(el("a", { className: "btn main", href: p.ytmusic, ...ext }, "Youtube Music"));
-  if (p.spotify) inner.appendChild(el("a", { className: "btn", href: p.spotify, ...ext }, "Spotify"));
-  panel.appendChild(inner);
+  const sec = el("section", { className: "reveal" });
+  sec.appendChild(el("h2", {}, group.title));
+  const list = el("div", { className: "list" });
 
-  btn.addEventListener("click", () => {
-    const open = btn.getAttribute("aria-expanded") === "true";
-    btn.setAttribute("aria-expanded", String(!open));
-    panel.classList.toggle("open", !open);
-    panel.inert = open;
+  shown.forEach(p => {
+    const id = "panel" + (panelId++);
+    const item = el("div", { className: "reveal" });
+    const btn = el("button", { className: "row", type: "button" });
+    btn.appendChild(el("b", {}, p.name));
+    if (p.desc) btn.appendChild(el("small", {}, p.desc));
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-controls", id);
+
+    const panel = el("div", { className: "panel", id });
+    panel.inert = true;
+    const inner = el("div");
+    if (p.ytmusic) inner.appendChild(el("a", { className: "btn main", href: p.ytmusic, ...ext }, "Youtube Music"));
+    if (p.spotify) inner.appendChild(el("a", { className: "btn", href: p.spotify, ...ext }, "Spotify"));
+    panel.appendChild(inner);
+
+    btn.addEventListener("click", () => {
+      const open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!open));
+      panel.classList.toggle("open", !open);
+      panel.inert = open;
+    });
+    item.append(btn, panel);
+    list.appendChild(item);
   });
-  item.append(btn, panel);
-  $("playlists").appendChild(item);
+
+  sec.appendChild(list);
+  $("groups").appendChild(sec);
 });
 
 // Ordem da animação de entrada
