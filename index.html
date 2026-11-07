@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedro De Luca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Krona+One&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#09090b;--card1:#18181b;--card2:#101013;--line:rgba(255,255,255,.09);
+  --text:#fff;--muted:#9b9ba6;--accent:#6c7bff;
+  --script:"Allura","Brush Script MT",cursive; /* fonte do "Pedro": troque aqui */
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:16px/1.5 Quicksand,"Segoe UI",system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.banner{position:absolute;top:0;left:0;right:0;height:320px;background:center/cover no-repeat;filter:grayscale(1);opacity:.5;-webkit-mask-image:linear-gradient(#000 35%,transparent);mask-image:linear-gradient(#000 35%,transparent)}
+main{position:relative;max-width:430px;margin:0 auto;padding:40px 22px 64px;text-align:center}
+
+/* entrada da página */
+.reveal{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i,0)*70ms)}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1}}
+
+/* cabeçalho */
+.ring{width:116px;height:116px;margin:0 auto;padding:4px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 5px rgba(255,255,255,.1)}
+.ring>*{width:100%;height:100%;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:var(--card1);font-size:40px;font-weight:700}
+.first{font:400 56px/1 var(--script);transform:rotate(-5deg);margin:12px 0 -16px;position:relative;z-index:1}
+.last{font:400 38px/1.1 "Krona One","Segoe UI",sans-serif;letter-spacing:.06em;margin:0}
+.info{margin:12px 0 6px;font-weight:600;color:#d9d9e0}
+.quote{margin:12px 0 20px;font-style:italic;color:#e8e8ee;font-size:15px}
+.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.soc{display:grid;place-items:center;width:34px;height:34px;border:0;background:none;cursor:pointer;color:inherit;text-decoration:none}
+.soc img{width:22px;height:22px;transition:transform .2s,opacity .2s;opacity:.92}
+.soc:hover img,.soc[aria-pressed="true"] img{transform:translateY(-2px) scale(1.1);opacity:1}
+.nickwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.2,.7,.2,1)}
+.nickwrap.open{grid-template-rows:1fr}
+.nickwrap>div{overflow:hidden;min-height:0}
+.nick{display:inline-block;margin-top:12px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card1);font-weight:600;font-size:14px;opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s}
+.nickwrap.open .nick{opacity:1;transform:none}
+
+.divider{display:flex;align-items:center;gap:12px;margin:30px 0 8px;color:#6e6e78;font-size:14px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent)}
+
+h2{display:flex;align-items:center;gap:12px;margin:26px 0 12px;font:600 12px Quicksand,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* cards */
+.list{display:grid;gap:10px}
+.card{display:flex;align-items:center;gap:14px;padding:12px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(135deg,var(--card1),var(--card2));color:var(--text);text-decoration:none;text-align:left;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.22)}
+.thumb{flex:none;width:76px;height:56px;border-radius:12px;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,#000 60%,transparent);mask-image:linear-gradient(90deg,#000 60%,transparent)}
+.txt{flex:1;min-width:0}
+.txt b{display:block;font-size:16px}
+.txt small{display:block;color:var(--muted);font-size:13px}
+.go{flex:none;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+
+/* playlists */
+.row{display:block;width:100%;font:inherit;cursor:pointer;text-align:center;padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(135deg,var(--card1),var(--card2));color:var(--text);transition:transform .2s,border-color .2s}
+.row:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.22)}
+.row b{display:block;font-size:16px}
+.row small{display:block;color:var(--muted);font-size:13px}
+.panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.2,.7,.2,1)}
+.panel.open{grid-template-rows:1fr}
+.panel>div{overflow:hidden;min-height:0;display:flex;gap:12px}
+.btn{flex:1;margin-top:10px;padding:11px;border-radius:12px;text-align:center;text-decoration:none;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--card1);color:var(--accent);opacity:0;transform:translateY(-8px);transition:opacity .3s .08s,transform .3s .08s}
+.btn.main{background:var(--accent);border-color:var(--accent);color:#09090b}
+.panel.open .btn{opacity:1;transform:none}
+.panel.open .btn+.btn{transition-delay:.16s}
+
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1}}
+</style>
+</head>
+<body>
+<div class="banner" id="banner"></div>
+<main>
+  <header>
+    <div class="reveal" id="photo"></div>
+    <div class="first reveal" id="first"></div>
+    <h1 class="last reveal" id="last"></h1>
+    <div class="info reveal" id="info"></div>
+    <p class="quote reveal" id="quote"></p>
+    <div class="socials reveal" id="socials"></div>
+    <div class="nickwrap" id="nickwrap" inert><div><span class="nick" id="nick"></span></div></div>
+  </header>
+
+  <div class="divider reveal">✦</div>
+
+  <section class="reveal" id="pagesSec"><h2 id="pagesTitle"></h2><div class="list" id="pages"></div></section>
+  <section class="reveal" id="plSec"><h2 id="plTitle"></h2><div class="list" id="playlists"></div></section>
+</main>
+
+<script>
+/* ================= CONFIGURAÇÃO: edite só este bloco =================
+   Fotos e ícones aceitam um caminho de arquivo (ex.: "img/foto.jpg")
+   ou, nos ícones, uma chave do Iconify (ex.: "fa6-brands:instagram").   */
+const CONFIG = {
+  banner: "",                       // imagem de fundo do topo (opcional), ex.: "img/banner.jpg"
+  photo: "",                        // sua foto, ex.: "img/foto.jpg"
+  firstName: "Pedro",
+  lastName: "DE LUCA",
+  info: ["🇧🇷 Brazil", "Guarulhos"],   // separados por " | " (pode incluir a idade)
+  quote: "“A happy life consists in tranquility of mind.” 🎧 🪐 🤘",
+
+  /* Redes: type "link" abre o endereço; type "nick" mostra o nome embaixo dos ícones.
+     Para adicionar outra rede, copie uma linha. Value vazio ("") esconde a rede. */
+  socials: [
+    { label: "Instagram",   icon: "fa6-brands:instagram",   type: "link", value: "https://instagram.com/" },
+    { label: "LinkedIn",    icon: "fa6-brands:linkedin-in", type: "link", value: "https://linkedin.com/" },
+    { label: "X",           icon: "fa6-brands:x-twitter",   type: "link", value: "https://x.com/" },
+    { label: "Discord",     icon: "fa6-brands:discord",     type: "nick", value: "seu_nick" },
+    { label: "PlayStation", icon: "fa6-brands:playstation", type: "nick", value: "seu_nick" },
+    { label: "Riot Games",  icon: "simple-icons:riotgames", type: "nick", value: "Nome#TAG" },
+    { label: "Chess.com", icon: "simple-icons:chessdotcom", type: "link", value: "https://chess.com/member/PHSdeLuca" }
+
+    /* Exemplos para adicionar depois:
+    { label: "TikTok",    icon: "fa6-brands:tiktok",        type: "link", value: "https://tiktok.com/@usuario" },
+    { label: "Chess.com", icon: "simple-icons:chessdotcom", type: "link", value: "https://chess.com/member/PHSdeLuca" }, */
+  ],
+
+  /* Páginas: acrescente quantas quiser, uma linha por página. "thumb" é opcional. */
+  pagesTitle: "Acessos rápidos",
+  pages: [
+    { label: "LetterboxD",       note: "Resenhas pessoais de filmes",        url: "https://letterboxd.com/", thumb: "" },
+    { label: "Minhas Playlists", note: "Uma seleção de sons pra cada momento", url: "https://open.spotify.com/", thumb: "" },
+    { label: "Meu YouTube",      note: "Vídeos, filmes e muito mais",        url: "https://youtube.com/", thumb: "" }
+  ],
+
+  playlistsTitle: "Playlists",
+  playlists: [
+    { name: "Legends of Rock",      desc: "Rock • 2025",     ytmusic: "https://music.youtube.com/", spotify: "https://open.spotify.com/", visible: true },
+    { name: "Midnight Frequencies", desc: "Eletrônica • 2025", ytmusic: "https://music.youtube.com/", spotify: "https://open.spotify.com/", visible: true },
+    { name: "My Cinematic Universe",desc: "Cinema • 2025",   ytmusic: "https://music.youtube.com/", spotify: "https://open.spotify.com/", visible: true }
+  ]
+};
+/* ==================================================================== */
+
+const $ = id => document.getElementById(id);
+const el = (tag, props = {}, text) => {
+  const e = document.createElement(tag);
+  Object.assign(e, props);
+  if (text) e.textContent = text;
+  return e;
+};
+const ext = { target: "_blank", rel: "noopener noreferrer" };
+const iconSrc = v => /[\/.]/.test(v) ? v : "https://api.iconify.design/" + v + ".svg?color=%23ffffff";
+
+// Cabeçalho
+if (CONFIG.banner) $("banner").style.backgroundImage = 'url("' + CONFIG.banner + '")';
+const ring = el("div", { className: "ring" });
+ring.appendChild(CONFIG.photo
+  ? el("img", { src: CONFIG.photo, alt: CONFIG.firstName })
+  : el("div", {}, CONFIG.firstName.charAt(0)));
+$("photo").appendChild(ring);
+$("first").textContent = CONFIG.firstName;
+$("last").textContent = CONFIG.lastName;
+$("info").textContent = CONFIG.info.join(" | ");
+$("quote").textContent = CONFIG.quote;
+document.title = CONFIG.firstName + " " + CONFIG.lastName;
+
+// Redes sociais
+let active = null;
+CONFIG.socials.filter(s => s.value).forEach(s => {
+  const img = el("img", { src: iconSrc(s.icon), alt: "", width: 22, height: 22 });
+  if (s.type === "link") {
+    const a = el("a", { className: "soc", href: s.value, ...ext });
+    a.setAttribute("aria-label", s.label);
+    a.appendChild(img);
+    $("socials").appendChild(a);
+  } else {
+    const b = el("button", { className: "soc", type: "button" });
+    b.setAttribute("aria-label", s.label);
+    b.setAttribute("aria-pressed", "false");
+    b.appendChild(img);
+    b.addEventListener("click", () => {
+      const same = active === b;
+      document.querySelectorAll(".soc[aria-pressed]").forEach(x => x.setAttribute("aria-pressed", "false"));
+      if (same) { active = null; $("nickwrap").classList.remove("open"); $("nickwrap").inert = true; return; }
+      active = b;
+      b.setAttribute("aria-pressed", "true");
+      $("nick").textContent = s.label + ": " + s.value;
+      $("nickwrap").classList.add("open");
+      $("nickwrap").inert = false;
+    });
+    $("socials").appendChild(b);
+  }
+});
+
+// Páginas
+$("pagesTitle").textContent = CONFIG.pagesTitle;
+CONFIG.pages.forEach(p => {
+  const a = el("a", { className: "card reveal", href: p.url, ...ext });
+  if (p.thumb) a.appendChild(el("img", { className: "thumb", src: p.thumb, alt: "" }));
+  const t = el("div", { className: "txt" });
+  t.appendChild(el("b", {}, p.label));
+  if (p.note) t.appendChild(el("small", {}, p.note));
+  a.append(t, el("span", { className: "go" }, "↗"));
+  $("pages").appendChild(a);
+});
+if (!CONFIG.pages.length) $("pagesSec").hidden = true;
+
+// Playlists
+$("plTitle").textContent = CONFIG.playlistsTitle;
+const shown = CONFIG.playlists.filter(p => p.visible !== false);
+if (!shown.length) $("plSec").hidden = true;
+shown.forEach((p, i) => {
+  const item = el("div", { className: "reveal" });
+  const btn = el("button", { className: "row", type: "button" });
+  btn.appendChild(el("b", {}, p.name));
+  if (p.desc) btn.appendChild(el("small", {}, p.desc));
+  btn.setAttribute("aria-expanded", "false");
+  btn.setAttribute("aria-controls", "panel" + i);
+
+  const panel = el("div", { className: "panel", id: "panel" + i });
+  panel.inert = true;
+  const inner = el("div");
+  if (p.ytmusic) inner.appendChild(el("a", { className: "btn main", href: p.ytmusic, ...ext }, "Youtube Music"));
+  if (p.spotify) inner.appendChild(el("a", { className: "btn", href: p.spotify, ...ext }, "Spotify"));
+  panel.appendChild(inner);
+
+  btn.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", String(!open));
+    panel.classList.toggle("open", !open);
+    panel.inert = open;
+  });
+  item.append(btn, panel);
+  $("playlists").appendChild(item);
+});
+
+// Ordem da animação de entrada
+document.querySelectorAll(".reveal").forEach((n, i) => n.style.setProperty("--i", i));
+</script>
+</body>
+</html>
